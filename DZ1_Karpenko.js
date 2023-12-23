@@ -13,11 +13,11 @@ deepEqual(obj1, obj2);
 
 // Бонус Задание 2 – Развернуть строку в обратном направлении при помощи методов массивов:
 
-// function reverseStr(str) {
-//   return str.split("").toReversed().join("");
-// }
+function reverseStr(str) {
+  return str.split("").toReversed().join("");
+}
 
-// reverseStr("abcd");
+reverseStr("abcd");
 // dcba
 
 function reverseStr2(str) {
