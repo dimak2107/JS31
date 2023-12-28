@@ -3,13 +3,40 @@
 const obj1 = { here: { is: "on", other: "3" }, object: "Z" };
 const obj2 = { here: { is: "on", other: "2" }, object: "Z" };
 
-const deepEqual = (obj1, obj2) => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2) ? true : false;
-  //return JSON.stringify(obj1) === JSON.stringify(obj2) ? 'Objects are equal' : 'Objects are not equal';
-};
+const deepEqual = (obj1, obj2) =>
+  JSON.stringify(obj1) === JSON.stringify(obj2) ? true : false;
 
 deepEqual(obj1, obj2);
 // false
+
+const deepEqualTwo = (obj1, obj2) => {
+  const obj1Keys = Object.keys(obj1);
+  const obj2Keys = Object.keys(obj2);
+
+  if (obj1Keys.length !== obj2Keys.length) {
+    return false;
+  }
+
+  for (let key in obj1) {
+    value1 = obj1[key];
+    value2 = obj2[key];
+
+    if (
+      typeof obj1[key] === "object" &&
+      typeof obj2[key] === "object" &&
+      !deepEqualTwo(value1, value2)
+    ) {
+      return false;
+    }
+    if (value1 !== value2) {
+      return false;
+    }
+  }
+  return true;
+};
+
+console.log(deepEqualTwo(obj1, obj2));
+//false
 
 // Бонус Задание 2 – Развернуть строку в обратном направлении при помощи методов массивов:
 
