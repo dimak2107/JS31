@@ -37,7 +37,7 @@ const customBind = function (someFunc, context) {
   };
 };
 
-obj2 = { value: 10 };
+obj2 = { value: 20 };
 
 const sum = function (a) {
   return this.value + a;
