@@ -90,19 +90,57 @@
 // элемента с задержкой в 3 секунды.
 // Входные данные: [10, 12, 15, 21]
 
-const arr = [10, 12, 15, 21];
+// const arr = [10, 12, 15, 21];
 
-const logger = (arr) => {
-  loggerHelper(arr, 0);
-};
+// const logger = (arr) => {
+//   loggerHelper(arr, 0);
+// };
 
-const loggerHelper = (arr, i) => {
-  if (i < arr.length) {
-    setTimeout(() => {
-      console.log(arr[i]);
-      loggerHelper(arr, i + 1);
-    }, 3000);
-  }
-};
+// const loggerHelper = (arr, i) => {
+//   if (i < arr.length) {
+//     setTimeout(() => {
+//       console.log(arr[i]);
+//       loggerHelper(arr, i + 1);
+//     }, 3000);
+//   }
+// };
 
-logger(arr);
+// logger(arr);
+
+// ********************************
+
+Promise.resolve()
+  .then(() => console.log("a: 1"))
+  .then(() => {
+    setTimeout(() => console.log("timeout 2"));
+    console.log("a: 2");
+  })
+  .then(() => {
+    setTimeout(() => console.log("timeout 3"));
+    console.log("a: 3");
+  });
+
+new Promise((res, rej) => {
+  console.log("b");
+  rej(new Error("123"));
+})
+  .then(console.log("b 1"))
+  .then(
+    () => console.log("b 2"),
+    () => console.log("b")
+  )
+  .catch(() => console.log("b 3"))
+  .then(() => console.log("b 4"));
+
+// 1:  'b'  (1 промиз нет синхронного кода. ничего не выводим. 2 промиз - выводится б (124 стр))
+// 2: 'b 1', 'a:1'  (console.log("a: 1") попадает в очередь микротасок а console.log("b 1") выполнится синхронно)
+// т.к. не была передана в виде колбэка на resolve или reject
+// 3: 'a:2', 'b' - сначала setTimeout(() => console.log("timeout 2")); попадает в очередь макротасок
+// далее выводится console.log("a: 2");
+// далее выводится () => console.log("b"), т.к. промиз был rejected
+// т.к. не была передана в виде колбэка на resolve или reject
+// 4: 'a:3', 'b 4' - сначала setTimeout(() => console.log("timeout 3")); попадает в очередь макротасок
+// далее выводится console.log("a: 3");
+// далее выводится () => console.log("b 4"), т.к. на предыдущем проходе ошибка была обратботана, следовательно мы блок catch не попадаем
+// далее в порядке вызова выведутся console.log("timeout 2") и console.log("timeout 3")
+//
